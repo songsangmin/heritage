@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:heritage/pages/regitpage.dart';
+
+import 'homepage.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({Key? key}) : super(key: key);
@@ -74,12 +77,16 @@ class _LoginPage extends State<LoginPage>{
         minWidth: 200,
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
        // minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage())
+          );
+        },
         child: const Text("Login",
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 20,
-          fontFamily: "Hon",
+          fontFamily: "Ppuri",
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),),
@@ -104,18 +111,42 @@ class _LoginPage extends State<LoginPage>{
                     child: Image.asset("assets/logo.png",
                       fit: BoxFit.contain,),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   emailField,
                   const SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   passwordField,
                   const SizedBox(
                     height: 20,
                   ),
                   loginButton,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text("Don't have an account? ",
+                        style: TextStyle(
+                          fontFamily: "Ppuri",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                        ),),
+                      GestureDetector(onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RegitPage()));
+                      },
+                      child: const Text("Sign up",
+                        style: TextStyle(
+                          color: Colors.amber,
+                            fontFamily: "Ppuri",
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),))
+                    ],
+                  )
                 ],
               ),
             ),
