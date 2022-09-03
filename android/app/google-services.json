@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "409339361796",
+    "project_id": "heritage-682e9",
+    "storage_bucket": "heritage-682e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409339361796:android:e180d8f9f260ce44e85351",
+        "android_client_info": {
+          "package_name": "com.ssm.heritage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409339361796-rfjminc4oii7jglokl5tu5vkn9gvdaai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssm.heritage",
+            "certificate_hash": "d4f8419f4c4ac0a2cc7257658662013b7e697239"
+          }
+        },
+        {
+          "client_id": "409339361796-9tq88nvi0u4rf2ds6a75hq5btvel8dsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpkwuvykV2WokJRjdeQRWFfaphIFWaBOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409339361796-9tq88nvi0u4rf2ds6a75hq5btvel8dsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
