@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:heritage/pages/homepage.dart';
+
+import '../models/user_model.dart';
 
 class RegitPage extends StatefulWidget{
   const RegitPage({Key? key}) : super (key: key);
@@ -10,6 +16,8 @@ class RegitPage extends StatefulWidget{
 }
 
 class _RegitPage extends State<RegitPage>{
+
+  final _auth = FirebaseAuth.instance;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -29,6 +37,20 @@ class _RegitPage extends State<RegitPage>{
           autofocus: false,
           controller: firstNameEditingController,
           keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            RegExp regexp = RegExp(r'^.{2,}$');
+            //성 빈칸 검사
+            if(value!.isEmpty){
+              return ("성은 빈칸이 될 수 없습니다");
+            }
+
+            //성 유효성 검사
+            if(!regexp.hasMatch(value)){
+              return("유효한 성을 입력하세요. (최소 1글자)");
+            }
+
+            return null;
+          },
           onSaved: (value){
             firstNameEditingController.text = value!;
           },
@@ -54,6 +76,13 @@ class _RegitPage extends State<RegitPage>{
           autofocus: false,
           controller: secondNameEditingController,
           keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            //이름 빈칸 검사
+            if(value!.isEmpty){
+              return ("이름을 입력하세요");
+            }
+            return null;
+          },
           onSaved: (value){
             secondNameEditingController.text = value!;
           },
@@ -79,6 +108,19 @@ class _RegitPage extends State<RegitPage>{
           autofocus: false,
           controller: emailEditingController,
           keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            //이메일 빈칸 검사
+            if(value!.isEmpty){
+              return ("이메일을 입력하세요");
+            }
+
+            //이메일 유효성 검사
+            if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]").hasMatch(value)){
+              return ("유효한 이메일을 입력하세요");
+            }
+
+            return null;
+          },
           onSaved: (value){
             emailEditingController.text = value!;
           },
@@ -105,6 +147,18 @@ class _RegitPage extends State<RegitPage>{
           obscureText: true,
           controller: passwordEditingController,
           keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            RegExp regexp = RegExp(r'^.{6,}$');
+            //비밀번호 빈칸 검사
+            if(value!.isEmpty){
+              return ("비밀번호를 입력하세요");
+            }
+
+            //비밀번호 유효성 검사
+            if(!regexp.hasMatch(value)){
+              return("유효한 비밀번호를 입력하세요. (최소 6글자)");
+            }
+          },
           onSaved: (value){
             passwordEditingController.text = value!;
           },
@@ -131,6 +185,12 @@ class _RegitPage extends State<RegitPage>{
           controller: confirmEditingController,
           obscureText: true,
           keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            if(confirmEditingController.text != passwordEditingController.text){
+              return "비밀번호가 일치하지 않습니다";
+            }
+            return null;
+          },
           onSaved: (value){
             confirmEditingController.text = value!;
           },
@@ -159,7 +219,7 @@ class _RegitPage extends State<RegitPage>{
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         // minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.of(context).pop();
+          signUp(emailEditingController.text, passwordEditingController.text);
         },
         child: const Text("생성",
           textAlign: TextAlign.center,
@@ -236,4 +296,41 @@ class _RegitPage extends State<RegitPage>{
     );
   }
 
+  //회원가입 함수
+  void signUp(String email, String password) async{
+    if(_formKey.currentState!.validate()){
+      await _auth.createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+            postDetailsToFirestore()
+      }).catchError((e){
+        Fluttertoast.showToast(msg: e!.message);
+      });
+    }
+  }
+
+  postDetailsToFirestore() async {
+    //Firestore 부르기
+    //UserModel 부르기
+    //value 보내기
+    
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+    
+    UserModel userModel = UserModel();
+    
+    userModel.email = user!.email;
+    userModel.uid = user!.uid;
+    userModel.firstName = firstNameEditingController.text;
+    userModel.secondName = secondNameEditingController.text;
+    
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "회원가입이 성공적으로 완료되었습니다.");
+    
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+  }
 }
