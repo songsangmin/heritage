@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heritage/pages/regitpage.dart';
-
 import 'homepage.dart';
 
 class LoginPage extends StatefulWidget{
@@ -201,5 +200,4 @@ class _LoginPage extends State<LoginPage>{
       });
     }
   }
-
 }

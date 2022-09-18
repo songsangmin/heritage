@@ -3,12 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heritage/pages/homepage.dart';
-
 import '../models/user_model.dart';
 
 class RegitPage extends StatefulWidget{
   const RegitPage({Key? key}) : super (key: key);
-
   @override
   State<StatefulWidget> createState() {
     return _RegitPage();
@@ -18,9 +16,8 @@ class RegitPage extends StatefulWidget{
 class _RegitPage extends State<RegitPage>{
 
   final _auth = FirebaseAuth.instance;
-
   final _formKey = GlobalKey<FormState>();
-
+  //controller
   final firstNameEditingController = TextEditingController();
   final secondNameEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
@@ -29,7 +26,6 @@ class _RegitPage extends State<RegitPage>{
 
   @override
   Widget build(BuildContext context) {
-
     //성 field
     final firstNameField = SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
@@ -43,12 +39,10 @@ class _RegitPage extends State<RegitPage>{
             if(value!.isEmpty){
               return ("성은 빈칸이 될 수 없습니다");
             }
-
             //성 유효성 검사
             if(!regexp.hasMatch(value)){
               return("유효한 성을 입력하세요. (최소 1글자)");
             }
-
             return null;
           },
           onSaved: (value){
@@ -113,12 +107,10 @@ class _RegitPage extends State<RegitPage>{
             if(value!.isEmpty){
               return ("이메일을 입력하세요");
             }
-
             //이메일 유효성 검사
             if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]").hasMatch(value)){
               return ("유효한 이메일을 입력하세요");
             }
-
             return null;
           },
           onSaved: (value){
@@ -153,7 +145,6 @@ class _RegitPage extends State<RegitPage>{
             if(value!.isEmpty){
               return ("비밀번호를 입력하세요");
             }
-
             //비밀번호 유효성 검사
             if(!regexp.hasMatch(value)){
               return("유효한 비밀번호를 입력하세요. (최소 6글자)");
@@ -312,12 +303,11 @@ class _RegitPage extends State<RegitPage>{
     //Firestore 부르기
     //UserModel 부르기
     //value 보내기
-    
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     
     UserModel userModel = UserModel();
-    
+    //User 모델
     userModel.email = user!.email;
     userModel.uid = user!.uid;
     userModel.firstName = firstNameEditingController.text;

@@ -5,7 +5,6 @@ class Boardpage extends StatefulWidget{
   State<StatefulWidget> createState() {
     return _BoardPage();
   }
-
 }
 
 class _BoardPage extends State<Boardpage>{
@@ -13,5 +12,4 @@ class _BoardPage extends State<Boardpage>{
   Widget build(BuildContext context) {
     return Scaffold();
   }
-
 }
